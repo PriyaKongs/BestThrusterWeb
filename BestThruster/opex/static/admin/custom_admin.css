@@ -1,0 +1,31 @@
+/* Change primary color (usually blue) to mildred */
+.model-name,
+.module,
+.app-name,
+.dashboard,
+.submit-row input,
+.breadcrumbs a,
+.breadcrumbs a:hover {
+    color: #DC143C;
+    /* Mildred color code */
+}
+
+.submit-row input {
+    background-color: #DC143C;
+    /* Mildred color code */
+    border-color: #DC143C;
+    /* Mildred color code */
+}
+
+.nav-sidebar li a:hover,
+.nav-sidebar li a:focus {
+    background-color: #DC143C;
+    /* Mildred color code */
+    border-color: #DC143C;
+    /* Mildred color code */
+}
+
+.nav-sidebar li a {
+    color: #DC143C;
+    /* Mildred color code */
+}
