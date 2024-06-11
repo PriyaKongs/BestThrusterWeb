@@ -1,0 +1,33 @@
+<h1>Thruster Comparison</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#id_vessel_name').change(function() {
+            var vesselName = $(this).val();
+            if (vesselName) {
+                $.ajax({
+                    url: '{% url "get_vessel_modes" %}',
+                    data: {
+                        'vessel_name': vesselName
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#port_mode_prop').val(data.port_mode_prop);
+                        $('#bollard_mode_prop').val(data.bollard_mode_prop);
+                        $('#transit_mode_prop').val(data.transit_mode_prop);
+                    }
+                });
+            } else {
+                $('#port_mode_prop').val('');
+                $('#bollard_mode_prop').val('');
+                $('#transit_mode_prop').val('');
+            }
+        });
+    });
+</script>
