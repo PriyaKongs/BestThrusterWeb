@@ -1,0 +1,14 @@
+name: Organization Workflow Base
+
+on:
+  push:
+    branches:
+      - development
+      - production
+  pull_request:
+
+jobs:
+  tests:
+    uses: Kongsberg-Predictive-Maintenance/actions/.github/workflows/tests-configuration.yml@development
+    secrets:
+      organization_key: ${{ secrets.MACHINE_USER_PRIVATE_KEY }}

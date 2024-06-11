@@ -1,0 +1,53 @@
+###############################
+# Git Large File System (LFS) #
+###############################
+
+# Large input files
+tests/**/*.csv filter=lfs diff=lfs merge=lfs
+doc/**/*.csv filter=lfs diff=lfs merge=lfs
+resources/**/*.csv filter=lfs diff=lfs merge=lfs
+
+# Archives
+*.7z filter=lfs diff=lfs merge=lfs -text
+*.br filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
+*.tar filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+
+# Documents
+*.pdf filter=lfs diff=lfs merge=lfs -text
+*.docx filter=lfs diff=lfs merge=lfs -text
+*.scdoc filter=lfs diff=lfs merge=lfs -text
+*.dwg filter=lfs diff=lfs merge=lfs -text
+*.xmcd filter=lfs diff=lfs merge=lfs -text
+*.pptx filter=lfs diff=lfs merge=lfs -text
+
+# Images
+*.gif filter=lfs diff=lfs merge=lfs -text
+*.ico filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.pdf filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
+
+# Other
+*.drawio filter=lfs diff=lfs merge=lfs -text
+*.exe filter=lfs diff=lfs merge=lfs -text
+
+######################################################
+# Directories and Files to exclude from for Releases #
+######################################################
+
+# Directories with files
+/.github export-ignore
+/doc export-ignore
+/resources export-ignore
+/tests export-ignore
+
+# Files
+.gitattributes export-ignore
+.gitignore export-ignore
+.pylintrc export-ignore
+README.md export-ignore
+requirements.txt export-ignore
