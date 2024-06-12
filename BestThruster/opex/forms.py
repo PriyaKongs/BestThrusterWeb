@@ -9,19 +9,22 @@ class ThrusterForm(forms.Form):
         min_value=0,
         max_value=100,
         widget=forms.NumberInput(attrs={"id": "port_mode_prop"}),
+        label="Proportion of time in port mode",
     )
     bollard_mode_prop = forms.IntegerField(
         min_value=0,
         max_value=100,
         widget=forms.NumberInput(attrs={"id": "bollard_mode_prop"}),
+        label="Proportion of time in bollard mode",
     )
     transit_mode_prop = forms.IntegerField(
         min_value=0,
         max_value=100,
         widget=forms.NumberInput(attrs={"id": "transit_mode_prop"}),
+        label="Proportion of time in transit mode",
     )
     thruster_options = forms.MultipleChoiceField(
-        choices=[], widget=forms.CheckboxSelectMultiple
+        choices=[], widget=forms.CheckboxSelectMultiple, label="Select thrusters: "
     )
 
     def __init__(self, *args, **kwargs):
