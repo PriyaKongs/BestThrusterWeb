@@ -21,5 +21,11 @@ class VesselProfileThrustDeduction:
             transit_mode_mask
         ] / (1 - self.thruster_thrust_deduction)
         self.vessel_Va[transit_mode_mask] *= 1 - self.thruster_wake_factor
+        self.vessel_profile["thruster_auxiliary"] = self.thruster_profile[
+            "auxiliary_consumption_kW"
+        ]
+        self.vessel_profile["thruster_max_power"] = self.thruster_profile["max_power"]
+        self.vessel_profile["thruster_max_rpm"] = self.thruster_profile["max_rpm"]
+        self.vessel_profile["thruster_max_torque"] = self.thruster_profile["max_torque"]
 
         return self.vessel_profile

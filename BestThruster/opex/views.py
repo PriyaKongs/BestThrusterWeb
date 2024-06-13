@@ -1,3 +1,4 @@
+import pandas as pd
 from django.http import JsonResponse
 from django.shortcuts import render
 from .forms import ThrusterForm
@@ -8,6 +9,8 @@ from .logic_codes.vessel_time_spent import VesselTimeSpent
 from .logic_codes.vessel_data_modified import VesselDataModification
 from .logic_codes.thruster_data_modified import ThrusterProfileCalcs
 from .logic_codes.vessel_thrust_deduction import VesselProfileThrustDeduction
+from .logic_codes.minimum_power_calc import MinimumPower
+from .logic_codes.total_energies import VesselEnergySpent
 
 
 def process_thruster_form_data(request, form):
@@ -26,6 +29,15 @@ def process_thruster_form_data(request, form):
     )
     vessel_profile = vessel_modified.vess_data_unit_change()
 
+    thruster_energy_data_dictionary = {
+        "thruster": [],
+        "bollard": [],
+        "transit": [],
+        "total": [],
+        "auxi": [],
+        "non-comp": [],
+    }
+
     # modifying the thruster profile
     for thruster_name in selected_thrusters_read:
         thruster_profile_class = ThrusterProfileCalcs(thruster_name)
@@ -34,15 +46,48 @@ def process_thruster_form_data(request, form):
             thruster_profile, vessel_profile
         )
         vessel_profile_thrust_deduced = thrust_deduced_class.thrust_deduction()
+        mini_pwr_class = MinimumPower(thruster_profile, vessel_profile_thrust_deduced)
+        min_power_vessel_profile = mini_pwr_class.update_data()
+        vessel_energy_class = VesselEnergySpent(min_power_vessel_profile)
+        vessel_energy = vessel_energy_class.cal_energy_vessel_profile()
 
-    results = calculate_best_thruster(
-        vessel_name,
-        auxiliary_consumption_read,
-        port_mode_prop_read,
-        bollard_mode_prop_read,
-        transit_mode_prop_read,
-        selected_thrusters_read,
-    )
+        thruster_energy_data_dictionary["thruster"].append(thruster_name)
+
+        if auxiliary_consumption_read == "Yes":
+            thruster_energy_data_dictionary["bollard"].append(
+                vessel_energy["bollard_energy_with_auxiliary"]
+            )
+            thruster_energy_data_dictionary["transit"].append(
+                vessel_energy["transit_energy_with_auxiliary"]
+            )
+            thruster_energy_data_dictionary["total"].append(
+                vessel_energy["total_energy_with_auxiliary"]
+            )
+
+            thruster_energy_data_dictionary["auxi"].append(
+                vessel_energy["total_auxiliary_loss"]
+            )
+        else:
+            thruster_energy_data_dictionary["bollard"].append(
+                vessel_energy["bollard_energy_without_auxiliary"]
+            )
+            thruster_energy_data_dictionary["transit"].append(
+                vessel_energy["transit_energy_without_auxiliary"]
+            )
+            thruster_energy_data_dictionary["total"].append(
+                vessel_energy["total_energy_without_auxiliary"]
+            )
+
+            thruster_energy_data_dictionary["auxi"].append(0)
+
+        thruster_energy_data_dictionary["non-comp"].append(
+            vessel_energy["non_compliance_percentage"]
+        )
+
+    thruster_energy_data_dataframe = pd.DataFrame(thruster_energy_data_dictionary)
+    results = thruster_energy_data_dataframe.sort_values(by="total", ascending=True)
+
+    print(results)
 
     return results
 
