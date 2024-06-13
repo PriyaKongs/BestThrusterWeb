@@ -44,7 +44,6 @@ class VesselDataModification:
             self.vessel_hours[bollard_mode_mask]
             / self.vessel_data["bollard_time_original"]
         )
-
         self.vessel_hours[transit_mode_mask] = (
             mode_proportion_transit * self.total_user_transit_time
         )
@@ -74,5 +73,12 @@ class VesselDataModification:
             "bollard_time": self.total_user_bollard_time,
             "port_time": self.total_user_port_time,
         }
+
+        # for i in range(0, len(vessel_profile["vessel_Va"])):
+        #     print(
+        #         i,
+        #         vessel_profile["vessel_thrust_N"][i],
+        #         vessel_profile["vessel_Va"][i],
+        #     )
 
         return vessel_profile

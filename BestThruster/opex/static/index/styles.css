@@ -1,0 +1,38 @@
+/* Custom page background */
+body {
+    background-color: #faf8fa;
+    /* Light grey background */
+}
+
+/* Custom navbar background */
+.navbar {
+    background-color: #e46013;
+    /* Dark background for navbar */
+}
+
+.navbar .navbar-brand {
+    color: #120101;
+    /* White text for navbar brand */
+}
+
+.navbar .btn-secondary {
+    color: #fff;
+    /* White text for admin button */
+}
+
+/* Custom container background */
+.container {
+    background-color: #ffffff;
+    /* White background for the container */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom table header styles */
+.table thead th {
+    background-color: #138a2e;
+    /* Blue background for table header */
+    color: white;
+    /* White text for table header */
+}

@@ -1,33 +1,95 @@
-<h1>Thruster Comparison</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+<!DOCTYPE html>
+{%load static%}
+<html>
+<head>
+    <title>Thruster Comparison</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'index/styles.css' %}" rel="stylesheet">
+</head>
+<body>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#id_vessel_name').change(function() {
-            var vesselName = $(this).val();
-            if (vesselName) {
+    <!-- Admin Button -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Thruster Comparison</a>
+            <div class="ml-auto">
+                <a href="/admin/" class="btn btn-primary" >Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <form id="thruster-form" method="post" class="mt-3">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success"  style="background-color: #138a2e;">Results</button>
+        </form>
+
+        <div id="results-section" class="mt-5">
+            <!-- Placeholder for results structure -->
+            <h1>Results</h1>
+            <table class="table table-striped" id="results-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Thruster</th>
+                        <th>Bollard</th>
+                        <th>Transit</th>
+                        <th>Total</th>
+                        <th>Auxiliary</th>
+                        <th>Non-compliance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Placeholder rows for results -->
+                    <tr>
+                        <td colspan="7">Results will be displayed here...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Include jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#id_vessel_name').change(function() {
+                var vesselName = $(this).val();
+                if (vesselName) {
+                    $.ajax({
+                        url: '{% url "get_vessel_modes" %}',
+                        data: {
+                            'vessel_name': vesselName
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#port_mode_prop').val(data.port_mode_prop);
+                            $('#bollard_mode_prop').val(data.bollard_mode_prop);
+                            $('#transit_mode_prop').val(data.transit_mode_prop);
+                        }
+                    });
+                } else {
+                    $('#port_mode_prop').val('');
+                    $('#bollard_mode_prop').val('');
+                    $('#transit_mode_prop').val('');
+                }
+            });
+
+            $('#thruster-form').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
                 $.ajax({
-                    url: '{% url "get_vessel_modes" %}',
-                    data: {
-                        'vessel_name': vesselName
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        $('#port_mode_prop').val(data.port_mode_prop);
-                        $('#bollard_mode_prop').val(data.bollard_mode_prop);
-                        $('#transit_mode_prop').val(data.transit_mode_prop);
+                    url: '{% url "index" %}',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#results-section').html(response.html);
                     }
                 });
-            } else {
-                $('#port_mode_prop').val('');
-                $('#bollard_mode_prop').val('');
-                $('#transit_mode_prop').val('');
-            }
+            });
         });
-    });
-</script>
+    </script>
+</body>
+</html>

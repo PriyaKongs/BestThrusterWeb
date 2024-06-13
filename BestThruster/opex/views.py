@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from .forms import ThrusterForm
 from .calculation_logic import CalculationResults
 
@@ -9,7 +10,6 @@ from .logic_codes.vessel_data_modified import VesselDataModification
 
 
 def process_thruster_form_data(request, form):
-    vessel_name = form.cleaned_data["vessel_name"]
     auxiliary_consumption_read = form.cleaned_data["auxiliary_consumption"]
     port_mode_prop_read = form.cleaned_data["port_mode_prop"]
     bollard_mode_prop_read = form.cleaned_data["bollard_mode_prop"]
@@ -36,8 +36,15 @@ def index(request):
         form = ThrusterForm(request.POST)
         if form.is_valid():
             results = process_thruster_form_data(request, form)
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse(
+                    {
+                        "html": render_to_string(
+                            "opex/results_partial.html", {"results": results}, request
+                        )
+                    }
+                )
             return render(request, "opex/results.html", {"results": results})
-
     else:
         form = ThrusterForm()
 

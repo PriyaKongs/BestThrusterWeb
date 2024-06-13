@@ -15,7 +15,6 @@ class MinimumPower:
         self.unique_p_d = self.utils.unique_values("P_D", self.thruster)
 
     def update_data(self):
-
         self.initialize_new_columns()
 
         non_zero_indices = [i for i in range(len(self.vessel["vessel_Va"])) if i != 0]
@@ -123,7 +122,6 @@ class MinimumPower:
             return self.calculate_KtKqN_Bollard(i, subset)
 
     def calculate_KtKqN_transit(self, i, subset):
-
         J2_KT_temp = self.vessel["vessel_thrust_N"][i] / (
             self.vessel["vessel_Va"][i] ** 2
             * self.rho

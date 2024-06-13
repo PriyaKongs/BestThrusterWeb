@@ -1,0 +1,33 @@
+<h1>Results</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Thruster</th>
+            <th>Bollard</th>
+            <th>Transit</th>
+            <th>Total</th>
+            <th>Auxiliary</th>
+            <th>Non-compliance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if results %}
+            {% for result in results %}
+                <tr>
+                    <td>{{ result.rank }}</td>
+                    <td>{{ result.thruster }}</td>
+                    <td>{{ result.bollard }}</td>
+                    <td>{{ result.transit }}</td>
+                    <td>{{ result.total }}</td>
+                    <td>{{ result.auxiliary }}</td>
+                    <td>{{ result.non_compliance }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="7" class="text-center">Results will be displayed here...</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>

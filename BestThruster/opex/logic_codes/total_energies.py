@@ -26,7 +26,7 @@ class VesselEnergySpent:
 
     def cal_energy_vessel_profile(self):
         # Masks for transit and bollard conditions
-        transit_mask = self.min_energy_data["vessel_Va"] != 0
+        transit_mask = self.min_energy_data["vessel_Va"] > 0
         bollard_mask = ~transit_mask & (self.min_energy_data["vessel_thrust_N"] > 0)
 
         # Extracting relevant columns
